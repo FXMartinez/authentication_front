@@ -8,6 +8,7 @@ class App extends React.Component {
 
   state = {
     user: '',
+    useredit: 'off',
     users: [],
     username: '',
     password: ''
@@ -24,21 +25,34 @@ class App extends React.Component {
     )
   }
 
-  UsernameOnChange = (e) => {
+  editButton = () => {
+    console.log('edit button is being pressed')
+    this.state.useredit === 'off'
+    ?
+    this.setState({
+      useredit: "on"
+    })
+    :
+    this.setState({
+      useredit: "off"
+    })
+  }
+
+  usernameOnChange = (e) => {
     this.setState({
       username: e.target.value
     })
     console.log(this.state.username)
   }
 
-  PasswordOnChange = (e) => {
+  passwordOnChange = (e) => {
     this.setState({
       password: e.target.value
     })
     console.log(this.state.password)
   }
 
-  ClickHandler = (e) => {
+  submitHandler = (e) => {
     this.state.users.forEach( user => {
       this.state.username.toLowerCase() === user.username.toLowerCase() && this.state.password === user.password
       ?
@@ -65,14 +79,14 @@ class App extends React.Component {
           ?
           <div className='Centerme'>
             <h1> You must sign in to access the website </h1>
-              <SignIn ClickHandler={this.ClickHandler} UserName={this.UsernameOnChange} Password={this.PasswordOnChange} />
+              <SignIn submitHandler={this.submitHandler} userName={this.usernameOnChange} password={this.passwordOnChange} />
           </div>
           :
           <div className="App">
 
             <h1> BOOM! WHATUP </h1>
             <h2> This is the front page </h2> <br/>
-              <UserInformation CurrentUser={this.state.user} />
+              <UserInformation currentUser={this.state.user} editStatus={this.state.useredit} editButton={this.editButton}  />
 
           </div>
         }
