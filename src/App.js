@@ -12,7 +12,8 @@ class App extends React.Component {
     createUser: 'off',
     users: [],
     username: '',
-    password: ''
+    password: '',
+    confirmPassword: ''
   }
 
   componentDidMount(){
@@ -36,6 +37,35 @@ class App extends React.Component {
     })
   }
 
+  // Function for the button used to submit the new user information to the rails api
+  submitNewUserData = () => {
+    this.state.password === this.state.confirmPassword
+    ?
+      fetch('localhost:3000/api/v1/users', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accepts": "application/json"
+        },
+        body: JSON.stringify({
+          username: this.state.username,
+          password: this.state.password,
+          })
+        })
+        .then(resp => resp.json())
+        .then( console.log
+          //     newUserData => {
+          //   this.setState({
+          //     user: newUserData,
+          //     users: [...newUserData]
+          //   })
+          // }
+        )
+    :
+      alert("passwords do not match")
+  }
+
+  // Button for toggling the new user form on the signin component
   newUserButton = () => {
     this.state.createUser === "off"
     ?
@@ -75,6 +105,13 @@ class App extends React.Component {
     console.log(this.state.password)
   }
 
+  confirmPasswordOnChange = (e) => {
+    this.setState({
+      confirmPassword: e.target.value
+    })
+    console.log(this.state.confirmPassword)
+  }
+
   submitHandler = (e) => {
     this.state.users.forEach( user => {
       this.state.username.toLowerCase() === user.username.toLowerCase() && this.state.password === user.password
@@ -102,7 +139,15 @@ class App extends React.Component {
           ?
           <div className='Centerme'>
             <h1> You must sign in to access the website </h1>
-              <SignIn createButton={this.newUserButton} createUser={this.state.createUser} submitHandler={this.submitHandler} userName={this.usernameOnChange} password={this.passwordOnChange} />
+              <SignIn 
+                submitUser={this.submitNewUserData}
+                confirm={this.confirmPasswordOnChange} 
+                userName={this.usernameOnChange} 
+                password={this.passwordOnChange} 
+                createButton={this.newUserButton} 
+                submitHandler={this.submitHandler}
+                createUser={this.state.createUser} 
+              />
           </div>
           :
           <div className="App">
