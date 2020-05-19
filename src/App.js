@@ -27,6 +27,12 @@ class App extends React.Component {
     )
   }
 
+  logoutButton = () => {
+    this.setState({
+      user: ''
+    })
+  }
+
   deleteButton = (id) => {
     fetch(`http://localhost:3000/api/v1/users/${id}`, {
       method: 'DELETE',
@@ -38,10 +44,10 @@ class App extends React.Component {
   }
 
   // Function for the button used to submit the new user information to the rails api
-  submitNewUserData = () => {
+  submitNewUserData = (e) => {
     this.state.password === this.state.confirmPassword
     ?
-      fetch('localhost:3000/api/v1/users', {
+      fetch('http://localhost:3000/api/v1/users', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -49,20 +55,26 @@ class App extends React.Component {
         },
         body: JSON.stringify({
           username: this.state.username,
-          password: this.state.password,
+          password: this.state.password
           })
         })
         .then(resp => resp.json())
-        .then( console.log
-          //     newUserData => {
-          //   this.setState({
-          //     user: newUserData,
-          //     users: [...newUserData]
-          //   })
-          // }
-        )
-    :
+        .then(
+              newUserData => {
+                newUserData.id === null
+                ?
+                alert('you already have an account')
+                :
+                this.setState({
+                  user: newUserData,
+                  users: [...this.state.users, newUserData]
+                })
+              }
+            )
+      :
+
       alert("passwords do not match")
+    e.preventDefault()
   }
 
   // Button for toggling the new user form on the signin component
@@ -136,7 +148,9 @@ class App extends React.Component {
       <>
         {
           this.state.user === ''
+
           ?
+
           <div className='Centerme'>
             <h1> You must sign in to access the website </h1>
               <SignIn 
@@ -149,12 +163,19 @@ class App extends React.Component {
                 createUser={this.state.createUser} 
               />
           </div>
+
           :
+
           <div className="App">
 
             <h1> BOOM! WHATUP </h1>
             <h2> This is the front page </h2> <br/>
-              <UserInformation currentUser={this.state.user} editStatus={this.state.useredit} editButton={this.editButton}  />
+              <UserInformation 
+                logout={this.logoutButton} 
+                editButton={this.editButton}
+                currentUser={this.state.user} 
+                editStatus={this.state.useredit} 
+              />
 
           </div>
         }

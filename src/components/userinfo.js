@@ -25,6 +25,9 @@ function UserInformation(props) {
                 <button onClick={props.deleteButton}> Delete Account </button>
             </div>
             }
+            <div>
+                <button onClick={props.logout}> Logout </button>
+            </div>
         </div>
     )
 }

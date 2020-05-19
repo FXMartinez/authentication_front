@@ -14,6 +14,7 @@ function SignIn(props) {
             {
 
             props.createUser === 'off'
+            
             ?   
                 <form>
                     <label>
@@ -27,7 +28,9 @@ function SignIn(props) {
                     </label> <br/>
 
                     <input type="submit" value="Submit" onClick={ props.submitHandler } />
+
                     <button onClick={props.createButton}> Join </button>
+
                 </form>
 
             :
@@ -49,11 +52,14 @@ function SignIn(props) {
                         </label> <br/>
 
                         <input type="submit" value="Submit" onClick={ props.submitUser } />
+
                         <button onClick={props.createButton}>Sign In</button>
+
                     </form>
 
                 </div>
             }
+
         </div>
     );
 }
