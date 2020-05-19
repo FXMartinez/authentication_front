@@ -10,7 +10,7 @@ class App extends React.Component {
     user: '',
     useredit: 'off',
     createUser: 'off',
-    users: [],
+    users: '',
     username: '',
     password: '',
     confirmPassword: ''
@@ -21,7 +21,7 @@ class App extends React.Component {
       .then(resp => resp.json())
       .then(data => {
         this.setState({
-          users: [...data]
+          users: data
         })
       }
     )
@@ -125,23 +125,23 @@ class App extends React.Component {
   }
 
   submitHandler = (e) => {
-    this.state.users.forEach( user => {
-      this.state.username.toLowerCase() === user.username.toLowerCase() && this.state.password === user.password
-      ?
-      this.setState({
-        user: {...user}
-      })
-      :
-      alert('wrong bitch')
-      }
+    let foundUser = null;
+    this.state.users.forEach( user => 
+      user.username.toLowerCase() === this.state.username.toLowerCase() 
+      ? foundUser = user
+      :null 
     )
+    foundUser === null ? alert('user does not exist') 
+    : foundUser.password === this.state.password 
+      ? this.setState({ user: {...foundUser}}) 
+      : alert('Wrong password')
 
     e.preventDefault();
   }
 
   render() {
 
-    // console.log(this.state.users, "App")
+    console.log(this.state.users, "App")
 
     return (
     
@@ -152,7 +152,7 @@ class App extends React.Component {
           ?
 
           <div className='Centerme'>
-            <h1> You must sign in to access the website </h1>
+            <h1> You must sign in or create an account to access the website </h1>
               <SignIn 
                 submitUser={this.submitNewUserData}
                 confirm={this.confirmPasswordOnChange} 
@@ -179,6 +179,7 @@ class App extends React.Component {
 
           </div>
         }
+          
       </>
     );
   }

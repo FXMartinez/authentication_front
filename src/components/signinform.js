@@ -27,7 +27,7 @@ function SignIn(props) {
                         <input type="password" password="password" onChange={props.password}/>
                     </label> <br/>
 
-                    <input type="submit" value="Submit" onClick={ props.submitHandler } />
+                    <input type="submit" value="Sign-In" onClick={ props.submitHandler } />
 
                     <button onClick={props.createButton}> Join </button>
 
@@ -36,7 +36,6 @@ function SignIn(props) {
             :
 
                 <div>
-                    <h2> create user form goes here </h2> 
                     <form>
                         <label>
                             UserName:
@@ -44,14 +43,14 @@ function SignIn(props) {
                         </label> <br/>
                         <label>
                             Password:
-                            <input type="text" password="password" onChange={props.password} />
+                            <input type="password" password="password" onChange={props.password} />
                         </label> <br/>
                         <label>
                             Confirm Password:
-                            <input type="text" password="password" onChange={props.confirm} />
+                            <input type="password" password="password" onChange={props.confirm} />
                         </label> <br/>
 
-                        <input type="submit" value="Submit" onClick={ props.submitUser } />
+                        <input type="submit" value="Create account" onClick={ props.submitUser } />
 
                         <button onClick={props.createButton}>Sign In</button>
 

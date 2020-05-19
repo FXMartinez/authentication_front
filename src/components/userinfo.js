@@ -2,7 +2,7 @@ import React from 'react';
 
 function UserInformation(props) {
 
-    console.log(props.editStatus)
+    // console.log(props.editStatus)
 
     return(
         <div>
