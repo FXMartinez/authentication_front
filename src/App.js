@@ -9,6 +9,7 @@ class App extends React.Component {
   state = {
     user: '',
     useredit: 'off',
+    createUser: 'off',
     users: [],
     username: '',
     password: ''
@@ -23,6 +24,28 @@ class App extends React.Component {
         })
       }
     )
+  }
+
+  deleteButton = (id) => {
+    fetch(`http://localhost:3000/api/v1/users/${id}`, {
+      method: 'DELETE',
+      headers: {
+        "Content-Type": "application/json",
+        "Accepts": "application/json"
+      },
+    })
+  }
+
+  newUserButton = () => {
+    this.state.createUser === "off"
+    ?
+    this.setState({
+      createUser: "on"
+    })
+    :
+    this.setState({
+      createUser: "off"
+    })
   }
 
   editButton = () => {
@@ -79,7 +102,7 @@ class App extends React.Component {
           ?
           <div className='Centerme'>
             <h1> You must sign in to access the website </h1>
-              <SignIn submitHandler={this.submitHandler} userName={this.usernameOnChange} password={this.passwordOnChange} />
+              <SignIn createButton={this.newUserButton} createUser={this.state.createUser} submitHandler={this.submitHandler} userName={this.usernameOnChange} password={this.passwordOnChange} />
           </div>
           :
           <div className="App">

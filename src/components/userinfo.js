@@ -14,10 +14,10 @@ function UserInformation(props) {
             props.editStatus === 'off'
             ?
             <div>
-            username: {props.currentUser.username} <br/>
-            password: {props.currentUser.password} <br/>
-            joined: {props.currentUser.created_at} <br/>
-            user ID number: {props.currentUser.id}
+                username: {props.currentUser.username} <br/>
+                password: {props.currentUser.password} <br/>
+                joined: {props.currentUser.created_at} <br/>
+                user ID number: {props.currentUser.id}
             </div>
             :
             <div>
