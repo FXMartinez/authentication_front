@@ -2,7 +2,7 @@ import React from 'react';
 
 function UserInformation(props) {
 
-    // console.log(props.editStatus)
+    // console.log(props)
 
     return(
         <div>
@@ -22,6 +22,39 @@ function UserInformation(props) {
             :
             <div>
                 <h1> there is going to be an edit form here </h1> <br/>
+                <form>
+                    <label>
+
+                        UserName: 
+                        <textarea 
+                        type='text' 
+                        defaultValue={props.currentUser.username || ''}
+                        placeholder="User Name"
+                        onChange={props.editUsername}
+                        />
+
+                    </label> <br/>
+
+                    <label>
+
+                        Password:
+                        <textarea
+                        type='text'
+                        defaultValue={props.currentUser.password || ''}
+                        placeholder="Password"
+                        onChange={props.editPassword}
+                        />
+
+                    </label> <br/>
+
+                    <button onClick={props.editSubmit}>Submit</button>
+
+                </form>
+
+
+
+
+
                 <button onClick={props.deleteButton}> Delete Account </button>
             </div>
             }

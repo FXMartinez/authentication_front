@@ -13,6 +13,8 @@ class App extends React.Component {
     users: '',
     username: '',
     password: '',
+    // editUsername: '',
+    // editPassword: '',
     confirmPassword: ''
   }
 
@@ -34,13 +36,30 @@ class App extends React.Component {
   }
 
   deleteButton = (id) => {
-    fetch(`http://localhost:3000/api/v1/users/${id}`, {
+    fetch(`http://localhost:3000/api/v1/users/${this.state.user.id}`, {
       method: 'DELETE',
       headers: {
         "Content-Type": "application/json",
         "Accepts": "application/json"
       },
     })
+  }
+
+  editUserInfo = (id) => {
+    fetch(`http://localhost:3000/api/v1/users/${this.state.user.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "Accepts": "application/json"
+      },
+      body: JSON.stringify({
+        username: this.state.editUsername,
+        password: this.state.editPassword
+      })
+    })
+    .then(resp => resp.json())
+    .then( console.log )
+    alert(`Your info has successfully changed ${this.state.editUsername}`)
   }
 
   // Function for the button used to submit the new user information to the rails api
@@ -67,6 +86,8 @@ class App extends React.Component {
                 :
                 this.setState({
                   user: newUserData,
+                  username: '',
+                  password: '',
                   users: [...this.state.users, newUserData]
                 })
               }
@@ -141,7 +162,7 @@ class App extends React.Component {
 
   render() {
 
-    console.log(this.state.users, "App")
+    console.log(this.state.user.id, "App")
 
     return (
     
@@ -175,6 +196,9 @@ class App extends React.Component {
                 editButton={this.editButton}
                 currentUser={this.state.user} 
                 editStatus={this.state.useredit} 
+                editUsername={this.usernameOnChange}
+                editPassword={this.passwordOnChange}
+                editSubmit={this.editUserInfo}
               />
 
           </div>

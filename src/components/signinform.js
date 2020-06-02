@@ -19,12 +19,20 @@ function SignIn(props) {
                 <form>
                     <label>
                         UserName:
-                        <input type="text" username="username" onChange={props.userName} />
+                        <input type="text" 
+                        username="username" 
+                        onChange={props.userName} 
+                        placeholder='username' 
+                        />
                     </label> <br/>
 
                     <label>
                         Password:
-                        <input type="password" password="password" onChange={props.password}/>
+                        <input type="password" 
+                        password="password" 
+                        onChange={props.password}
+                        placeholder='password'
+                        />
                     </label> <br/>
 
                     <input type="submit" value="Sign-In" onClick={ props.submitHandler } />
