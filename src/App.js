@@ -1,6 +1,5 @@
 import React from 'react';
 import SignIn from './components/signinform'
-// import logo from './logo.svg';
 import './App.css';
 import UserInformation from './components/userinfo';
 
@@ -13,8 +12,6 @@ class App extends React.Component {
     users: '',
     username: '',
     password: '',
-    // editUsername: '',
-    // editPassword: '',
     confirmPassword: ''
   }
 
@@ -31,38 +28,57 @@ class App extends React.Component {
 
   logoutButton = () => {
     this.setState({
-      user: ''
+      user: '',
+      createUser: 'off',
+      useredit: 'off'
     })
   }
 
-  deleteButton = (id) => {
-    fetch(`http://localhost:3000/api/v1/users/${this.state.user.id}`, {
-      method: 'DELETE',
-      headers: {
-        "Content-Type": "application/json",
-        "Accepts": "application/json"
-      },
-    })
+  deleteButton = () => {
+    if(window.confirm('Are you sure you want to delete your account?') === true) {
+      fetch(`http://localhost:3000/api/v1/users/${this.state.user.id}`, {
+        method: 'DELETE',
+        headers: {
+          "Content-Type": "application/json",
+          "Accepts": "application/json"
+        },
+      })
+      this.logoutButton()
+    } else {
+      return
+    }
   }
 
-  editUserInfo = (id) => {
+  filterUsers = (username) => {
+    let filteredArray = this.state.users.filter( user => { return user.username !== username })
+    return filteredArray
+  }
+
+  editUserInfo = (e) => {
     fetch(`http://localhost:3000/api/v1/users/${this.state.user.id}`, {
-      method: "PATCH",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
         "Accepts": "application/json"
       },
       body: JSON.stringify({
-        username: this.state.editUsername,
-        password: this.state.editPassword
+        username: this.state.username,
+        password: this.state.password
       })
     })
     .then(resp => resp.json())
-    .then( console.log )
-    alert(`Your info has successfully changed ${this.state.editUsername}`)
+    .then( editedUserData => {
+      let usersArray = this.state.users.filter(user => user.username !== editedUserData.username)
+      let fullArray = [ editedUserData, ...usersArray ]
+      this.setState({
+        users: fullArray
+      })
+    })
+    alert(`Your info has successfully changed ${this.state.user.username}`)
+    e.preventDefault()
   }
 
-  // Function for the button used to submit the new user information to the rails api
+
   submitNewUserData = (e) => {
     this.state.password === this.state.confirmPassword
     ?
@@ -98,7 +114,7 @@ class App extends React.Component {
     e.preventDefault()
   }
 
-  // Button for toggling the new user form on the signin component
+
   newUserButton = () => {
     this.state.createUser === "off"
     ?
@@ -154,7 +170,11 @@ class App extends React.Component {
     )
     foundUser === null ? alert('user does not exist') 
     : foundUser.password === this.state.password 
-      ? this.setState({ user: {...foundUser}}) 
+      ? this.setState({ 
+        user: {...foundUser},
+        username: foundUser.username,
+        password: foundUser.password
+      }, console.log(this.state.username, this.state.password, 'login')) 
       : alert('Wrong password')
 
     e.preventDefault();
@@ -162,7 +182,7 @@ class App extends React.Component {
 
   render() {
 
-    console.log(this.state.user.id, "App")
+    // console.log(this.state.user.id, "App")
 
     return (
     
@@ -199,6 +219,7 @@ class App extends React.Component {
                 editUsername={this.usernameOnChange}
                 editPassword={this.passwordOnChange}
                 editSubmit={this.editUserInfo}
+                delete={this.deleteButton}
               />
 
           </div>
